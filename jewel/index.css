@@ -1,0 +1,77 @@
+
+/* Overall properties of jacket */
+
+html, body
+{
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	color: #fff;
+	opacity: 1;
+	cursor: default;
+	font-family: "Lucida Grande";
+}
+
+/* Delete the declaration below if you don't want to fade in jacket */
+
+body
+{
+	opacity: 0;
+}
+
+/* Your properties below */
+
+.cover
+{
+	left: 40px;
+	top: 10px;
+	position: relative;
+	-webkit-background-size: cover;
+	width: 258px;
+	height: 254px;
+	background: url(images/default.png) no-repeat;
+}
+
+.xs .cover
+{
+	top: 5px;
+	left: 27px;
+	width: 152px;
+	height: 155px;
+}
+
+.overlay
+{
+	top: 0;
+	position: absolute;
+	width: 313px;
+	height: 287px;
+	background: url(images/256.png) no-repeat;
+}
+
+.xs .overlay
+{
+	width: 190px;
+	height: 203px;
+	background: url(images/128.png) no-repeat;
+}
+
+.track
+{
+	text-shadow: #333 0px 1px 3px;
+	margin-top: 15px;
+	font-family: "Helvetica Neue";
+	font-weight: bolder;
+	font-size: 13px;
+	text-align: center;
+	width: 255px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.xs .track
+{
+	font-size: 11px;
+	width: 150px;
+	margin-top: 10px;
+}

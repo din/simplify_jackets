@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en">
+	<head>
+		<!-- Jacket attribution properties -->
+		<meta name="jacket.title" content="Retrosimplify" />
+		<meta name="jacket.author" content="Semibold Mammoth" />
+		<meta name="jacket.url" content="http://mmth.us/simplify/" />
+		<meta name="jacket.version" content="1.1" />
+
+		<!-- Bounds (choose wisely to fit your contents) -->
+		<meta name="jacket.bounds" content="303x293" />		
+
+		<!-- Variations and boolean settings list -->
+		<meta name="jacket.variations" content="Small Black (153x185), Small White (153x185), Big Black, Big White" />
+		<meta name="jacket.settings" content="can_handle_track_title_visibility, !can_handle_cover_visibility" />
+
+		<!-- Stylesheets appendings (all paths are relative to the root of your jacket, be careful) -->
+		<link rel="stylesheet" type="text/css" href="index.css"  />
+		<link rel="stylesheet" type="text/css" href="variations.css"  />
+
+		<!-- Scripting -->
+		<script type="text/javascript">
+	
+		//Setting up on first launch
+		Simplify.listenEvent(PMEvents.Ready, function(initial_state) 
+		{
+			//Fading in on the first launch
+			$("body").animate({"opacity": "1px"});
+			//Activating application on double click
+			$("body, html").dblclick(function()
+			{
+				Simplify.activateCurrentPlayer();
+			});
+		});
+
+		//When variation changes, adding class to body to do our work
+		//See 'variations.css' for definitions of such classes
+		Simplify.listenEvent(PMEvents.VariationChange, function(variation) 
+		{ 
+
+			//If variation name contains 'small', changing to the small version
+			if (/small/i.test(variation))
+			{
+				$("body").addClass("small-size");
+			}
+			else
+			{
+				$("body").removeClass("small-size");
+			}
+
+			//If variation name contains 'white', changing to the white jacket
+			if (/white/i.test(variation))
+			{
+				$("body").addClass("white-overlay");
+			}
+			else
+			{
+				$("body").removeClass("white-overlay");
+			}
+		});
+
+		//When user changes option of track title visibility
+		Simplify.listenEvent(PMEvents.DisplayTrackTitleChange, function(state)
+		{
+			if (state)
+			{
+				$(".track").show();
+			}
+			else
+			{
+				$(".track").hide();
+			}
+		});
+
+		//Changing track title in the box
+		Simplify.listenEvent(PMEvents.TrackInformationChange, function(artist, title, album)
+		{
+			//Track title variable
+			var track_title = "Dive into the world of your music.";
+			
+			//Undefined attributes means stopped playback.
+			if (artist != undefined && title != undefined)
+			{
+				track_title = artist + "<br />" + title;
+			}
+
+			$(".track").html(track_title);
+		});
+
+		//Changing cover image
+		Simplify.listenEvent(PMEvents.CoverChange, function(cover)
+		{
+			//Undefined cover means stopped playback
+			if (cover == undefined)
+			{
+				$(".cover").css("background", "url(images/default.png)");
+				return;
+			}
+
+			//Setting cover image
+			$(".cover").css("background", "url('" + cover + "')");
+		});
+
+		//When playback state changes
+		Simplify.listenEvent(PMEvents.PlaybackStateChange, function(state)
+		{
+			if (state == PMPlayerState.Paused)
+			{
+				$(".control img[alt=play]").attr("src", "images/play.png");
+			}
+			else if (state == PMPlayerState.Playing)
+			{
+				$(".control img[alt=play]").attr("src", "images/pause.png");
+			}
+		});
+
+		//On hover, showing up a little bit of information
+		Simplify.listenEvent(PMEvents.InactiveMouseEnter, function()
+		{
+			//Showing controls only if music is playing aloud
+			if (Simplify.playerState() != PMPlayerState.Stopped)
+			{
+				$(".control").fadeIn();
+			}
+		});
+
+		//Hiding controls
+		Simplify.listenEvent(PMEvents.InactiveMouseExit, function()
+		{
+			//Hiding controls
+			$(".control").fadeOut();
+		});
+
+		</script>
+	</head>
+	<body>
+		<div class="cover"></div>
+		<div class="overlay"></div>
+		<div class="track">
+			Dive into the world of music.
+		</div>
+		<div class="control">
+			<img onclick="Simplify.previousTrack();" src="images/prev.png" alt="prev" />
+			<img onclick="Simplify.togglePlayback();" src="images/play.png" alt="play" />
+			<img onclick="Simplify.nextTrack();" src="images/next.png" alt="next" />	
+		</div>
+	</body>
+</html>
+
+
+

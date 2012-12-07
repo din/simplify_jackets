@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en">
+	<head>
+		<meta name="jacket.title" content="Essence" />
+		<meta name="jacket.author" content="Semibold Mammoth" />
+		<meta name="jacket.url" content="http://mmth.us/simplify/" />
+		<meta name="jacket.version" content="1.1" />
+
+		<meta name="jacket.bounds" content="350x350" />		
+
+		<meta name="jacket.variations" content="Small Enough, Big Enough" />
+		<meta name="jacket.settings" content="!can_handle_track_title_visibility, !can_handle_cover_visibility" />
+
+		<link rel="stylesheet" type="text/css" href="index.css"  />
+		<link rel="stylesheet" type="text/css" href="variations.css"  />
+
+		<script type="text/javascript">
+	
+		//Setting up on first launch
+		Simplify.listenEvent(PMEvents.Ready, function(initial_state) 
+		{
+			//Fading in on the first launch
+			$("body").animate({"opacity": "1"});
+
+			//Appending highlights
+			$(".controls a").click(function()
+			{
+				var _this = $(this);
+
+				if (_this.hasClass("previous"))
+				{
+					Simplify.previousTrack();
+				}
+				else if (_this.hasClass("next"))
+				{
+					Simplify.nextTrack();
+				}
+				else if (_this.hasClass("toggle"))
+				{
+					Simplify.togglePlayback();
+				}
+			})
+
+			//Activating application on double click
+			$("body, html").dblclick(function()
+			{
+				//Simplify.activateCurrentPlayer();
+			});
+
+			//When player stopped, fixing its properties
+			if (Simplify.playerState() == PMPlayerState.Stopped)
+			{
+				$(".bar").hide();
+				$(".title").text("Simplify is music on your desktop.");
+			}
+
+			//Progress bar settings
+			setInterval(function()
+			{
+				if (Simplify.playerState() == PMPlayerState.Playing)
+				{
+					Simplify.getTrackPlayedAmount(function(amount)
+					{
+						$(".bar-inside").css({"width": (amount * 100).toString() + "%"});
+					});
+				}
+			}, 500);
+
+			//Seeks track when user double clicks on the progress bar
+			$(".bar").dblclick(function(event)
+			{
+				var percentage = (event.pageX - $(this).offset().left)/$(this).width();
+				Simplify.setTrackSeeking(Simplify.getTrackLength() * percentage);
+			});
+		});
+
+		//When variation changes, doing our work
+		Simplify.listenEvent(PMEvents.VariationChange, function(variation) 
+		{ 
+			//Changing variation of jacket
+			if (variation == "Small Enough")
+			{
+				$("body").addClass("medisized");
+			}
+			else
+			{
+				$("body").removeClass("medisized");
+			}
+
+			//Manual track change notification
+			if (window.first_time != undefined)
+			{
+				Simplify.notifyAboutTrackTitleChange();
+			}
+
+			window.first_time = true;
+		});
+
+		//UI modifications on playback changes
+		Simplify.listenEvent(PMEvents.PlaybackStateChange, function(state)
+		{
+			if (state == PMPlayerState.Stopped)
+			{
+				$(".bar").hide();
+				$(".title").text("Simplify is music on your desktop.");
+			}
+
+			if (state == PMPlayerState.Paused)
+			{
+				$(".toggle").text("Play");
+			}
+			else if (state == PMPlayerState.Playing)
+			{
+				$(".toggle").text("Pause");
+			}
+		});
+
+		//Changing track title in the box
+		Simplify.listenEvent(PMEvents.TrackInformationChange, function(artist, title, album)
+		{
+			//Undefined attributes means stopped playback.
+			if (artist != undefined && title != undefined)
+			{
+				$(".artist").text(artist);
+				$(".title").text(title);
+			}
+			else
+			{
+				$(".artist").text("");
+				$(".title").text("Simplify is music on your desktop.");
+			}
+			
+		});
+
+		//Changing cover image
+		Simplify.listenEvent(PMEvents.CoverChange, function(cover)
+		{
+			//Undefined cover means stopped playback
+			if (cover == undefined)
+			{
+				$(".cover img").attr("src", "images/default.png");
+				$(".controls, .bar").hide();
+				return;
+			}
+
+			$(".controls, .bar").hide();
+			$(".cover img").toggleClass("change");
+			setTimeout(function() { $(".cover img").attr("src", cover); $(".controls, .bar").show() }, 900);
+		});
+
+		//On hover, showing up a little bit of information
+		Simplify.listenEvent(PMEvents.InactiveMouseEnter, function()
+		{
+			//Showing controls only if music is playing aloud
+			if (Simplify.playerState() != PMPlayerState.Stopped)
+			{
+				$(".controls").addClass("activated");
+			}
+		});
+
+		//Hiding controls
+		Simplify.listenEvent(PMEvents.InactiveMouseExit, function()
+		{
+			//Hiding controls
+			$(".controls").removeClass("activated");
+		});
+		
+		</script>
+	</head>
+	<body>
+		<div class="cover">
+			<div class="artist"></div>
+			<img src="images/default.png" />
+			<div class="title"></div>
+
+			<div title="Double-click to seek" class="bar">
+				<div class="bar-inside"></div>
+			</div>
+		</div>
+		<div class="controls">
+			<a class="previous" href="#">Prev</a><a class="toggle" href="#">Pause</a><a class="next" href="#">Next</a>
+		</div>
+	</body>
+</html>

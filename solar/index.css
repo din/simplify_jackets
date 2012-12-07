@@ -1,0 +1,106 @@
+
+/* Overall properties of jacket */
+
+html, body
+{
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	color: #fff;
+	opacity: 1;
+	cursor: default;
+}
+
+/* Delete the declaration below if you don't want to fade in jacket */
+
+body
+{
+	opacity: 0;
+	color: #fff;
+}
+
+/* Your properties below */
+
+.progress
+{
+	width: 60px;
+	height: 60px;
+	position: absolute;
+	left: 0;
+	top: 9px;
+}
+
+.progress span
+{
+	font-family: "Helvetica Neue";
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	line-height: 60px;
+	text-align: center;
+	color: white;
+}
+
+.jacket
+{
+	width: 100%;
+	height: 85%;
+	background: transparent;
+	padding-top: 10px;
+	-webkit-border-radius: 8px;
+	padding-left: 60px;
+	overflow: hidden;
+}
+
+.jacket > div
+{
+	margin: 0 20px;
+	font-family: "Helvetica Neue";
+	font-weight: lighter;
+	font-size: 30px;
+	overflow: hidden;
+	text-shadow: #000 1px 1px 1px;
+	text-align: left;
+	height: 33px;
+}
+
+.jacket .title
+{
+	font-size: 26px;
+}
+
+.jacket .artist
+{
+	font-size: 20px;
+}
+
+/* Variations */
+
+body.black
+{
+	color: #000;
+}
+
+body.black .jacket > div
+{
+	text-shadow: none;
+}
+
+body.right-aligned .jacket > div
+{
+	text-align: right;
+}
+
+body.right-aligned .progress
+{
+	left: auto;
+	right: 0;
+}
+
+body.right-aligned .jacket
+{
+	padding-left: 0;
+	width: 89%;
+}

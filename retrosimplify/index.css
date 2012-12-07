@@ -1,0 +1,76 @@
+
+/* Overall properties of jacket */
+
+html, body
+{
+	margin: 0;
+	padding: 0;
+	width: 256px;
+	height: 300px;
+	background: transparent;
+	color: #fff;
+	opacity: 1;
+	cursor: default;
+	font-family: "Lucida Grande";
+}
+
+body
+{
+	opacity: 0;
+}
+
+.cover
+{
+	-webkit-border-radius: 7px;
+	-webkit-background-size: 256px 256px;
+	width: 256px;
+	height: 256px;
+	background: url(images/default.png);
+}
+
+.overlay
+{
+	top: 0;
+	position: absolute;
+	width: 303px;
+	height: 256px;
+	background: url(images/overlay.png) no-repeat;
+}
+
+.track
+{
+	text-shadow: #333 0px 1px 3px;
+	margin-top: 5px;
+	font-family: "Lucida Grande";
+	font-weight: bolder;
+	font-size: 13px;
+	text-align: center;
+	width: 256px;
+}
+
+.control
+{
+	display: none;
+	-webkit-border-radius: 7px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 256px;
+	height: 256px;
+	background: rgba(0, 0, 0, 0.7);
+}
+
+.control img
+{
+	position: absolute;
+}
+
+.control img:active
+{
+	opacity: 0.5;
+}
+
+.control img[alt=prev] { left: 16%; top: 44%; }
+.control img[alt=next] { right: 16%; top: 44%; }
+.control img[alt=play] { margin-left: -32px; left: 50%; top: 38%; }
+

@@ -1,0 +1,35 @@
+
+/* Variations */
+
+.small-size .cover
+{
+	-webkit-background-size: 128px 128px;
+	width: 128px;
+	height: 128px;
+}
+
+.small-size .overlay
+{
+	-webkit-background-size: 153px 128px;
+}
+
+.small-size .track
+{
+	width: 128px;
+	font-size: 10px;
+}
+
+.small-size .control {
+	width: 129px;
+	height: 128px;
+	-webkit-border-radius: 5px;
+}
+
+.small-size .control img[alt=prev] { left: 10px; top: 44%; width: 28px; }
+.small-size .control img[alt=next] { right: 11px; top: 44%; width: 28px; }
+.small-size .control img[alt=play] { margin-left: -20px; left: 50%; top: 50px; width: 40px; }
+
+.white-overlay .overlay
+{
+	background: url(images/overlay-white.png) no-repeat;
+}

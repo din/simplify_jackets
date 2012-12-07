@@ -1,0 +1,138 @@
+
+/* Overall properties of jacket */
+
+html, body
+{
+	margin: 0;
+	padding: 0;
+	width: 300px;
+	height: 410px;
+	background: transparent;
+	color: #fff;
+	opacity: 1;
+	cursor: default;
+}
+
+body
+{
+	opacity: 0;
+}
+
+/* Overlay and cover itself */
+
+.cover
+{
+	z-index: 10;
+	overflow: hidden;
+	-webkit-perspective: 1000;
+	-webkit-transform: rotate(3deg);
+	background: transparent;
+	padding: 12px 12px 35px 12px;
+	position: absolute;
+	opacity: 1;
+	width: 250px;
+	height: 290px;
+	top: 10px;
+	left: 50%;
+	margin-left: -130px;
+}
+
+.cover img
+{
+	-webkit-box-shadow: #000 2px 2px 5px;
+	-webkit-transition: -webkit-transform 1s;
+	-webkit-transform-style: preserve-3d;
+	-webkit-border-radius: 8px;
+	width: 250px;
+	height: 250px;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+.cover img.change
+{
+	-webkit-transition: -webkit-transform 1s;
+	-webkit-transform: rotateY(1440deg);
+}
+
+.title, .artist
+{
+	display: block;
+	color: #fff;
+	padding: 0;
+	padding: 0 12px;
+	position: absolute;
+	left: 0;
+	right: 0;
+	font-weight: 600;
+	text-align: center;
+	font-size: 15px;
+	font-family: "Helvetica Neue";
+	text-shadow: #000 1px 1px 3px;
+}
+
+.artist
+{
+	font-size: 13px;
+	top: 0;
+}
+
+/* Faded out controls below cover */
+
+.controls a
+{
+	-webkit-transition: all 0.5s;
+	-webkit-perspective: 1000;
+	-webkit-transform: rotate(3deg) translate(55px, 0);
+	color: #000;
+	background: #fff;
+	position: absolute;
+	font-family: "Helvetica Neue";
+	cursor: default;
+	font-size: 12px;
+	text-decoration: none;
+	padding: 6px 10px 6px 10px;
+	-webkit-border-radius: 4px 0 0 4px; 
+	-webkit-box-shadow: #000 1px 0px 1px;
+	left: 0px;
+	z-index: 2;
+	width: 50px;
+	text-align: left;
+}
+
+.activated a
+{
+	-webkit-transition: all 0.5s;
+	-webkit-transform: rotate(15deg) translate(7px, 0);	
+}
+
+.controls a.toggle { top: 45%; left: 3px; }
+.controls a.previous { top: 55%; left: 1px; }
+.controls a.next { top: 65%; }
+
+/* Bar with progress */
+
+.bar
+{
+	-webkit-border-radius: 2px;
+	-webkit-box-shadow: #000 0px 1px 2px;
+	position: absolute;
+	top: 280px;
+	left: 16px;
+	right: 16px;
+	height: 5px;
+	border: solid 1px #fff;
+	z-index: 1000000;
+}
+
+.bar-inside
+{
+	-webkit-border-radius: 2px;
+	position: absolute;
+	left: 1;
+	top: 1;
+	bottom: 1;
+	width: 0%;
+	background: #fff;
+}
+

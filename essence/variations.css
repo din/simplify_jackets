@@ -1,0 +1,48 @@
+
+/* Variations modifications */
+
+.medisized .cover
+{
+	padding: 10px 10px 30px 10px;
+	width: 160px;
+	height: 210px;
+	margin-left: -110px;
+	-webkit-background-size: cover;
+}
+
+.medisized .cover img
+{
+	width: 160px;
+	height: 160px;
+	margin-bottom: 18px;
+}
+
+.medisized .track
+{
+	line-height: 1em;
+}
+
+.medisized .controls a
+{
+	font-size: 11px;
+	padding: 4px 8px 4px 8px;
+	-webkit-transform: rotate(3deg) translate(75px, 0);
+}
+
+.medisized .activated a
+{
+	-webkit-transform: rotate(3deg) translate(30px, 0);	
+}
+
+.medisized .controls a.toggle { top: 28%; left: 3px; }
+.medisized .controls a.previous { top: 36%; left: 1px; }
+.medisized .controls a.next { top: 44%; }
+
+.medisized .bar
+{
+	-webkit-box-shadow: none;
+	top: 188px;
+	left: 13px;
+	right: 13px;
+	height: 5px;
+}
