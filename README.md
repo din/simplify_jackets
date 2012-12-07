@@ -146,15 +146,15 @@ When you include external files, all paths must be *relative* to the root of you
 
 When you created HTML-document for your jacket, it's time to write some JavaScript. You will be using Jackets API in order to communicate with Simplify. This API is pretty straightforward. 
 
-Each jacket has its own JavaScript-environment. This environment contains `Simplify` object to interact with Simplify itself. `Simplify` object is ready to use, no need to create instances of it. 
+Each jacket has its own JavaScript-environment. This environment contains `Simplify` object to interact with Simplify itself. `Simplify` object is ready to use, you don't need to instantiate it or initialize somehow. 
 
 This section describes its methods, events and properties.
 
 ### Incoming events
 
-Jacket may receive various events from Simplify. For example, playback state altered, track position or volume adjusted, current track or artwork changed. Your jacket may react to all of these events and modify its interface to provide user with visual feedback on what's coming on with their music.
+Jacket may receive various events from Simplify. Examples are: playback state altered, track position or volume adjusted, current track or artwork changed. Your jacket may react to all of these events and modify its interface to provide user with visual feedback.
 
-You can subscribe to any events by using `Simplify.listenEvent(event_type, callback)` method. The first argument is name of event to listen to. The second argument is a function that will be called when event occurs.
+You can subscribe to an event by using `Simplify.listenEvent(event_type, callback)` method. The first argument is the name of event to listen to. The second argument is a function that will be called when event occurs.
 
 The following list enumerates all available events:
 
