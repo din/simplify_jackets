@@ -378,6 +378,6 @@ Now you can edit any files in jacket's directory and Simplify will automatically
 
 ## Distributing jacket
 
-To distribute and share your jacket, simply add to the folder with your jacket contents a '.jacket' extension. If you've got a folder 'my_jacket', just rename it to 'my_jacket.jacket'. Note that you *don't need to compress your folder before renaming it since Simplify 2.6*. 
+To distribute and share your jacket, simply add to the folder with your jacket contents a `.jacket` extension. If you've got a folder `my_jacket`, just rename it to `my_jacket.jacket`. Note that you **don't need to compress your folder before renaming it since Simplify 2.6**. 
 
 User will be able to install your jacket from preferences or by double-clicking on `my_jacket.jacket` file.
