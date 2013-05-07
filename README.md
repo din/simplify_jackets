@@ -1,18 +1,18 @@
 # What are jackets?
 
-Jacket for [Simplify](http://mmth.us/simplify/) is a simple bundle with HTML, CSS and JS files inside. Jackets are simply skins for Simplify's desktop widgets. 
+Jacket for [Simplify](http://mmth.us/simplify/) is a simple bundle with HTML, CSS and JS files inside. Jackets are skins for Simplify's desktop widgets. 
 
-Jacket is similar to any HTML web-page with CSS styles and JS scripts. If you can mark-up and style web-pages, you can also knit your own jacket for Simplify. 
+A jacket is similar to any HTML web-page with CSS styles and JS scripts. If you can mark-up and style web-pages, you can also 'knit' your own jacket for Simplify. 
 
 ## Jacket folder structure and `index.html`
 
-Jacket is simply a folder. It may contain any number of files. You can place HTML, CSS, JS or even images inside the folder. 
+A jacket is a folder. It may contain any number of files. You can place HTML, CSS, JS, or even images inside the folder. 
 
 Every jacket must have one mandatory file called `index.html` in jacket's root folder. This file contains all information about your jacket: name, author, link to web-site, and some other important properties. Also, this file is used to mark-up your jacket and include cascading style sheets and scripts. 
 
-You do not need to include jQuery into your jacket, because it is already included by Simplify. You may, however, include other frameworks, if you like. In this case, your responsibility is to avoid their interference with jQuery. 
+You do not need to include jQuery into your jacket, because it is already included by Simplify. You may, however, include other frameworks, if you like or forbid Simplify to include jQuery. In this case, your responsibility is to avoid their interference with jQuery. 
 
-Note that `index.html` file must be valid HTML (HTML4 or HTML5).
+Note that `index.html` file must be valid HTML (XHTML, HTML4 or HTML5).
 
 ### Overall structure of `index.html`
 
@@ -50,6 +50,16 @@ Example:
 <meta name="jacket.title" content="My Jacket" />
 ```
 
+#### jacket.uid
+
+*Required.* Unique identifier of your jacket. This property was introduced since Simplify 2.6 and it is required. The identifier is represented in reverse DNS notation and it is recommended to use your company name and jacket name to create it.  
+
+Example:
+
+```
+<meta name="jacket.uid" content="com.mmth.solar" />
+```
+
 #### jacket.version
 
 *Required.* Version of your jacket. Simplify heavily relies on this number to track new versions of installed jackets. You can use `W.X.Y.Z`, `X.Y.Z`, or `X.Y` notation to specify version of jacket. When you update your jacket, just increment the proper number. 
@@ -84,12 +94,18 @@ Example:
 
 #### jacket.settings
 
-*Optional.* Comma-separated list of visibility settings for current jacket. If jacket can handle track title visibility, specify `can_handle_track_title_visibility`, if track can handle album cover visibility, specify 'can_handle_cover_visibility'. This preference is used by Simplify to enable/disable appropriate menu-items and preferences inside Simplify itself to allow users turn on or off track/artwork visibility.
+*Deprecated since Simplify 2.6.* Comma-separated list of visibility settings for current jacket. If jacket can handle track title visibility, specify `can_handle_track_title_visibility`, if track can handle album cover visibility, specify 'can_handle_cover_visibility'. This preference is used by Simplify to enable/disable appropriate menu-items and preferences inside Simplify itself to allow users turn on or off track/artwork visibility.
+
+**This property was removed in Simplify 2.6. Use `variations` if you need to control visibility of track title or album cover.**
+
+#### jacket.options
+
+*Optional.* Comma-separated list of options to apply to your jacket. Specify `no-jquery` to avoid including of Simplify's own jQuery script, `bowtie-compatibility` to enable compatibility with Bowtie API (this is useful to port to or develop Bowtie themes for Simplify).
 
 Example:
 
 ```
-<meta name="jacket.settings" content="can_handle_track_title_visibility" />
+<meta name="jacket.options" content="no-jquery" />
 ```
 
 #### jacket.author
@@ -124,6 +140,7 @@ Example:
 		<meta name="jacket.author" content="Semibold Mammoth" />
 		<meta name="jacket.url" content="http://mmth.us/" />
 		<meta name="jacket.version" content="1.0" />
+		<meta name="jacket.uid" content="com.mmth.myjacket" />
 
 		<meta name="jacket.bounds" content="300x250" />
 		<meta name="jacket.variations" content="Light Colours, Dark Colours (200x150)" />
@@ -162,8 +179,8 @@ The following list enumerates all available events:
 PMEvents.Ready
 PMEvents.VariationChange
 PMEvents.PlaybackStateChange
-PMEvents.TrackInformationChange
-PMEvents.CoverChange
+PMEvents.TrackInformationChange *Deprecated in Simplify 2.6*
+PMEvents.CoverChange *Deprecated in Simplify 2.6*
 PMEvents.DisplayCoverChange
 PMEvents.DisplayTrackTitleChange
 PMEvents.InactiveMouseEnter
@@ -256,11 +273,11 @@ Fires when album artwork is delivered for current track. Simplify pushes either 
 
 #### PMEvents.DisplayCoverChange
 
-Fires when user changed cover visibility for your jacket. This event fires only if you set `can_handle_cover_visibility` in `jacket.settings` property. Callback is called with boolean value that reflects user's choice.
+*Deprecated in Simplify 2.6.* Fires when user changed cover visibility for your jacket. This event fires only if you set `can_handle_cover_visibility` in `jacket.settings` property. Callback is called with boolean value that reflects user's choice.
 
 #### PMEvents.DisplayTrackTitleChange
 
-Fires when user changed track title visibility for your jacket. This event fires only if you set `can_handle_track_title_visibility` in `jacket.settings` property. Callback is called with boolean value that reflects user's choice.
+*Deprecated in Simplify 2.6.* Fires when user changed track title visibility for your jacket. This event fires only if you set `can_handle_track_title_visibility` in `jacket.settings` property. Callback is called with boolean value that reflects user's choice.
 
 #### PMEvents.InactiveMouseEnter
 
@@ -356,6 +373,6 @@ Now you can edit any files in jacket's directory and Simplify will automatically
 
 ## Distributing jacket
 
-To distribute and share your jacket, simply compress your folder with all its contents (`my_jacket` in aforementioned example). After that rename `my_jacket.zip` to `my_jacket.jacket`. 
+To distribute and share your jacket, simply add to the folder with your jacket contents a '.jacket' extension. If you've got a folder 'my_jacket', just rename it to 'my_jacket.jacket'. Note that you *don't need to compress your folder before renaming it since Simplify 2.6*. 
 
 User will be able to install your jacket from preferences or by double-clicking on `my_jacket.jacket` file.

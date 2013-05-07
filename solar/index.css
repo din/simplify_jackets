@@ -11,23 +11,36 @@ html, body
 	cursor: default;
 }
 
-/* Delete the declaration below if you don't want to fade in jacket */
-
 body
 {
 	opacity: 0;
 	color: #fff;
 }
 
-/* Your properties below */
-
-.progress
+.progress, .controls
 {
 	width: 60px;
 	height: 60px;
 	position: absolute;
 	left: 0;
 	top: 9px;
+	background: #fff;
+	border-radius: 60px;
+}
+
+.controls
+{
+	display: none;
+	z-index: 10;
+}
+
+.controls a
+{
+	width: 16px;
+	height: 16px;
+	position: absolute;
+	top: 22px;
+	f;
 }
 
 .progress span
@@ -40,7 +53,8 @@ body
 	left: 0;
 	line-height: 60px;
 	text-align: center;
-	color: white;
+	font-size: 14px;
+	color: #aaa;
 }
 
 .jacket

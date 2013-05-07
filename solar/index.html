@@ -8,82 +8,44 @@
 		<meta name="jacket.bounds" content="500x80" />		
 		<meta name="jacket.variations" content="To The Left, To The Right" />
 		<meta name="jacket.settings" content="!can_handle_track_title_visibility, !can_handle_cover_visibility" />
+		<meta name="jacket.uid" content="com.mmth.solar" />
 
 		<link rel="stylesheet" type="text/css" href="index.css"  />
 		<script type="text/javascript">
 	
-		//Draws circle with specified radius 
-		var drawCircle = function(element, radiusMin, angle, color)
-		{
-			var pbar = document.getElementById(element);
-			var pcnx = pbar.getContext("2d");
-			pcnx.fillStyle = color;
-
-			pcnx.beginPath();
-			pcnx.moveTo(pbar.width/2, pbar.height/2);
-			pcnx.arc(pbar.width/2, pbar.height/2, radiusMin, 0, angle*Math.PI/180);
-			pcnx.moveTo(pbar.width/2, pbar.height/2);
-			pcnx.closePath();
-			pcnx.fill();
-		}
-
-		var clearCircle = function(element)
-		{
-			var pbar = document.getElementById(element);
-			pbar.width = pbar.width;
-		}
-
-		var circleWidth = function(element)
-		{
-			return document.getElementById(element).width/2;
-		}
-
 		//When user changes jacket to yours, or Simplify starts with your jacket this event arrives
 		Simplify.listenEvent(PMEvents.Ready, function(initial_state) 
 		{
 			//This template jacket will fade in because of this line
 			$("body").animate({"opacity": "1"});
 
-			if (Simplify.playerState() == PMPlayerState.Stopped)
-			{
-				drawCircle("progressbar", circleWidth("progressbar"), 360, 'rgba(255, 255, 255, 1.0)');
-			}
-			else
-			{
-				drawCircle("progressbar", circleWidth("progressbar"), 360, 'rgba(255, 255, 255, 0.1)');
-			}
-
 			var updateCircle = function()
 			{
 				if (Simplify.playerState() == PMPlayerState.Playing)
 				{
-					//drawCircle("progressbar", 37, 360, 'rgba(255, 255, 255, 0.1)');
-
-					Simplify.getTrackPlayedAmount(function(value) 
+				
+					Simplify.getTrackSeeking(function(value) 
 					{ 
-						drawCircle("progressbar", circleWidth("progressbar")*value, 360, 'rgba(255, 255, 255, 1.0)');
+						var minutes = parseInt(value/60); minutes = minutes < 10 ? "0" + minutes : minutes,
+							 seconds = parseInt(value%60); seconds = seconds < 10 ? "0" + seconds : seconds
+
+						$(".progress span").text(minutes + ":" + seconds);
 					});
+				}
+				else
+				{
+					$(".progress span").text("");
 				}
 
 			}
 
-			updateCircle(), setInterval(updateCircle, 1500);
+			updateCircle(), setInterval(updateCircle, 1000);
 		});
 
 		//When variation changes, you can add/remove CSS-classes from body to keep track current variation
 		Simplify.listenEvent(PMEvents.VariationChange, function(variation) 
 		{ 
-			/* EXAMPLE CODE. IT WORKS! */
-
-			if (variation.indexOf("Black Text") != -1)
-			{
-				$("body").addClass("black");
-			}
-			else
-			{
-				$("body").removeClass("black");
-			}
-
+			
 			if (variation.indexOf("Right") != -1)
 			{
 				$("body").addClass("right-aligned");
@@ -108,6 +70,7 @@
 			}
 			else
 			{
+
 			}
 		});
 
@@ -119,13 +82,9 @@
 			{
 				$(".title").text(title);
 				$(".artist").text(artist);
-				clearCircle("progressbar");
-				drawCircle("progressbar", circleWidth("progressbar"), 360, 'rgba(255, 255, 255, 0.1)');	
 			}
 			else
 			{
-				clearCircle("progressbar");
-				drawCircle("progressbar", circleWidth("progressbar"), 360, 'rgba(255, 255, 255, 1.0)');
 				$(".title").text("Music is your favourite friend");
 				$(".artist").text("Simplify");
 			}
@@ -158,8 +117,13 @@
 			<div class="title">Music is your favourite friend</div>
 			<div class="artist">Simplify</div>
 		</div>
+		<div class="controls">
+			<a class="back" href="#"></a>
+			<a class="toggle playing" href="#"></a>
+			<a class="next" href="#"></a>
+		</div>
 		<div class="progress">
-			<canvas width="60" height="60" id="progressbar"></canvas>
+			<span></span>
 		</div>
 	</body>
 </html>
