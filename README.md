@@ -179,12 +179,17 @@ The following list enumerates all available events:
 PMEvents.Ready
 PMEvents.VariationChange
 PMEvents.PlaybackStateChange
-PMEvents.TrackInformationChange *Deprecated in Simplify 2.6*
-PMEvents.CoverChange *Deprecated in Simplify 2.6*
 PMEvents.DisplayCoverChange
 PMEvents.DisplayTrackTitleChange
 PMEvents.InactiveMouseEnter
 PMEvents.InactiveMouseExit
+```
+
+The following list enumerates deprecated events since Simplify 2.6:
+
+```
+PMEvents.TrackInformationChange
+PMEvents.CoverChange
 ```
 
 #### PMEvents.Ready
