@@ -429,18 +429,18 @@ Example returning value:
 { "width" : 1920, "height" : 1080 }
 ```
 
-## Migrating to Simplify 3.0 API from previous versions of API
+## Migrating to Simplify 3.0 API
 
 You need to update event names:
 
 ```
-PMEvents.Ready -> Simplify.events.ready 
-PMEvents.VariationChange 			-> Simplify.events.newVariation
-PMEvents.PlaybackStateChange 		-> Simplify.events.newPlaybackState
-PMEvents.DisplayCoverChange 		-> Simplify.events.newCover
-PMEvents.DisplayTrackTitleChange -> Simplify.events.newTrack
-PMEvents.InactiveMouseEnter 		-> Simplify.events.backgroundMouseIn
-PMEvents.InactiveMouseExit 		-> Simplify.events.backgroundMouseOut
+PMEvents.Ready							-> Simplify.events.ready 
+PMEvents.VariationChange			-> Simplify.events.newVariation
+PMEvents.PlaybackStateChange		-> Simplify.events.newPlaybackState
+PMEvents.DisplayCoverChange		-> Simplify.events.newCover
+PMEvents.DisplayTrackTitleChange	-> Simplify.events.newTrack
+PMEvents.InactiveMouseEnter		-> Simplify.events.backgroundMouseIn
+PMEvents.InactiveMouseExit			-> Simplify.events.backgroundMouseOut
 ```
 
 Playback states have new name aliases:

@@ -151,7 +151,7 @@
 		Simplify.listen(Simplify.events.backgroundMouseIn, function()
 		{
 			//Showing controls only if music is playing aloud
-			if (Simplify.playerState() != PMPlayerState.Stopped)
+			if (Simplify.getPlayerState() != Simplify.playerState.isStopped)
 			{
 				$(".controls").addClass("activated");
 			}
