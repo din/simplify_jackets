@@ -412,10 +412,12 @@ Calls you callback with double value between `0` and `1` indicating amount of tr
 
 Example:
 
+```
 Simplify.getTrackPlayedAmount(function(amount)
 {
 	//Do something with 'amount'
 });
+```
 
 #### Simplify.getSystemScreenSize
 
