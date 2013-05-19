@@ -5,7 +5,7 @@
 		<meta name="jacket.title" content="Essence" />
 		<meta name="jacket.author" content="Semibold Mammoth" />
 		<meta name="jacket.url" content="http://mmth.us/simplify/" />
-		<meta name="jacket.version" content="1.1" />
+		<meta name="jacket.version" content="1.2" />
 		<meta name="jacket.uid" content="com.mmth.essence" />
 
 		<!-- Bounds (choose wisely to fit your contents) -->
@@ -13,7 +13,6 @@
 
 		<!-- Variations and boolean settings list -->
 		<meta name="jacket.variations" content="Small Enough, Big Enough" />
-		<meta name="jacket.settings" content="!can_handle_track_title_visibility, !can_handle_cover_visibility" />
 
 		<!-- Stylesheets appendings (all paths are relative to the root of your jacket, be careful) -->
 		<link rel="stylesheet" type="text/css" href="index.css"  />
@@ -21,47 +20,9 @@
 
 		<!-- Scripting -->
 		<script type="text/javascript">
-		/* 
-		Available system methods (these are methods, don't forget to add parentheses):
-			Simplify.listenEvent(event_type, callback) - appends listener to the specified event (see PMEvents below)
-			
-			Simplify.activateCurrentPlayer() - activates current player application if exists
-			Simplify.currentVariation() - returns current variation of jacket
-
-			Simplify.playerState() - returns current state of player (see PMPlayerState below)
-			
-			Simplify.togglePlayback() - toggles playback of current player
-			Simplify.pausePlayback() - pauses playback of current player
-			Simplify.resumePlayback() - resumes playback of current player
-			
-			Simplify.previousTrack() - switches to previous track
-			Simplify.nextTrack() - switches to next track
-
-			Simplify.setPlayerVolume(new_volume) - sets volume of player (from 0 to 100)
-			Simplify.getPlayerVolume() - retrieves volume of player (from 0 to 100)
-
-			Simplify.setTrackSeeking(new_seeking_second) - sets player position to specified value (in seconds)
-			Simplify.getTrackSeeking() - retrieves player position (in seconds)
- 
-		Available events with possible arguments:
-			PMEvents.Ready <- [initial_state] - when jacket is ready to interact
-			PMEvents.VariationChange <- [new_variation] - when variation of current jacket changes
-			PMEvents.DisplayCoverChange <- [has_cover] - when user changes display settings of cover
-			PMEvents.DisplayTrackTitleChange <- [has_track_title] - when user changes display settings of track title
-			PMEvents.PlaybackStateChange <- [new_state] - when playback state changes (see PMPlayerState below)
-			PMEvents.InactiveMouseEnter <- [] - when mouse enters jacket (fires even if some other application is currently active)
-			PMEvents.InactiveMouseExit <- [] - when mouse exits jacket (fires even if some other application is currently active)
-			PMEvents.CoverChange <- [cover_path] - when cover image URL arrives after track change
-			PMEvents.TrackInformationChange <- [artist, title, album] - when track changes 
-
-		Available player states:
-			PMPlayerState.Playing - some player is currently plays music
-			PMPlayerState.Paused - some player is paused for now
-			PMPlyaerState.Stopped - there is no active players, or they are all stopped
-		*/
 	
 		//Setting up on first launch
-		Simplify.listenEvent(PMEvents.Ready, function(initial_state) 
+		Simplify.listen(Simplify.events.ready, function(old_size, initial_state) 
 		{
 			//Fading in on the first launch
 			$("body").animate({"opacity": "1"});
@@ -73,26 +34,20 @@
 
 				if (_this.hasClass("previous"))
 				{
-					Simplify.previousTrack();
+					Simplify.playbackPreviousTrack();
 				}
 				else if (_this.hasClass("next"))
 				{
-					Simplify.nextTrack();
+					Simplify.playbackNextTrack();
 				}
 				else if (_this.hasClass("toggle"))
 				{
-					Simplify.togglePlayback();
+					Simplify.playbackToggle();
 				}
 			})
 
-			//Activating application on double click
-			$("body, html").dblclick(function()
-			{
-				//Simplify.activateCurrentPlayer();
-			});
-
 			//When player stopped, fixing its properties
-			if (Simplify.playerState() == PMPlayerState.Stopped)
+			if (Simplify.getPlayerState() == Simplify.playerState.isStopped)
 			{
 				$(".bar").hide();
 				$(".title").text("Simplify is music on your desktop.");
@@ -101,7 +56,7 @@
 			//Progress bar settings
 			setInterval(function()
 			{
-				if (Simplify.playerState() == PMPlayerState.Playing)
+				if (Simplify.getPlayerState() == Simplify.playerState.isPlaying)
 				{
 					Simplify.getTrackPlayedAmount(function(amount)
 					{
@@ -119,7 +74,7 @@
 		});
 
 		//When variation changes, doing our work
-		Simplify.listenEvent(PMEvents.VariationChange, function(variation) 
+		Simplify.listen(Simplify.events.newVariation, function(variation) 
 		{ 
 			//Changing variation of jacket
 			if (variation == "Small Enough")
@@ -134,33 +89,33 @@
 			//Manual track change notification
 			if (window.first_time != undefined)
 			{
-				Simplify.notifyAboutTrackTitleChange();
+				//Simplify.notifyAboutTrackTitleChange();
 			}
 
-			window.first_time = true;
+			//window.first_time = true;
 		});
 
 		//UI modifications on playback changes
-		Simplify.listenEvent(PMEvents.PlaybackStateChange, function(state)
+		Simplify.listen(Simplify.events.newPlaybackState, function(state)
 		{
-			if (state == PMPlayerState.Stopped)
+			if (state == Simplify.playerState.isStopped)
 			{
 				$(".bar").hide();
 				$(".title").text("Simplify is music on your desktop.");
 			}
 
-			if (state == PMPlayerState.Paused)
+			if (state == Simplify.playerState.isPaused)
 			{
 				$(".toggle").text("Play");
 			}
-			else if (state == PMPlayerState.Playing)
+			else if (state == Simplify.playerState.isPlaying)
 			{
 				$(".toggle").text("Pause");
 			}
 		});
 
 		//Changing track title in the box
-		Simplify.listenEvent(PMEvents.TrackInformationChange, function(artist, title, album)
+		Simplify.listen(Simplify.events.newTrackInformation, function(artist, title, album)
 		{
 			//Undefined attributes means stopped playback.
 			if (artist != undefined && title != undefined)
@@ -177,7 +132,7 @@
 		});
 
 		//Changing cover image
-		Simplify.listenEvent(PMEvents.CoverChange, function(cover)
+		Simplify.listen(Simplify.events.newCover, function(cover)
 		{
 			//Undefined cover means stopped playback
 			if (cover == undefined)
@@ -193,7 +148,7 @@
 		});
 
 		//On hover, showing up a little bit of information
-		Simplify.listenEvent(PMEvents.InactiveMouseEnter, function()
+		Simplify.listen(Simplify.events.backgroundMouseIn, function()
 		{
 			//Showing controls only if music is playing aloud
 			if (Simplify.playerState() != PMPlayerState.Stopped)
@@ -203,7 +158,7 @@
 		});
 
 		//Hiding controls
-		Simplify.listenEvent(PMEvents.InactiveMouseExit, function()
+		Simplify.listen(Simplify.events.backgroundMouseOut, function()
 		{
 			//Hiding controls
 			$(".controls").removeClass("activated");

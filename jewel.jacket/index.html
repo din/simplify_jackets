@@ -4,10 +4,9 @@
 		<meta name="jacket.title" content="Jewel Case" />
 		<meta name="jacket.author" content="Semibold Mammoth" />
 		<meta name="jacket.url" content="http://mmth.us/simplify/" />
-		<meta name="jacket.version" content="1.1" />
+		<meta name="jacket.version" content="1.2" />
 		<meta name="jacket.bounds" content="313x314" />		
 		<meta name="jacket.variations" content="XS Case (190x223), XL Case" />
-		<meta name="jacket.settings" content="can_handle_track_title_visibility, !can_handle_cover_visibility" />
 		<meta name="jacket.uid" content="com.mmth.jewelcase" />
 
 		<link rel="stylesheet" type="text/css" href="index.css"  />
@@ -15,22 +14,14 @@
 		<script type="text/javascript">
 
 		//When user changes jacket to yours, or Simplify starts with your jacket this event arrives
-		Simplify.listenEvent(PMEvents.Ready, function(initial_state) 
+		Simplify.listen(Simplify.events.ready, function(initial_state) 
 		{
 			//This template jacket will fade in because of this line
 			$("body").animate({"opacity": "1"});
-
-			//Activating active player on double click
-			$("body, html").dblclick(function()
-			{
-				Simplify.activateCurrentPlayer();
-			});
-
-			/* YOUR INITIALIZATION CODE */
 		});
 
 		//When variation changes, you can add/remove CSS-classes from body to keep track current variation
-		Simplify.listenEvent(PMEvents.VariationChange, function(variation) 
+		Simplify.listen(Simplify.events.newVariation, function(variation) 
 		{ 
 			//If variation name contains 'small', changing to the small version
 			if (/XS/i.test(variation))
@@ -43,21 +34,8 @@
 			}
 		});
 
-		//When user changes option of track title visibility
-		Simplify.listenEvent(PMEvents.DisplayTrackTitleChange, function(state)
-		{
-			if (state)
-			{
-				$(".track").show();
-			}
-			else
-			{
-				$(".track").hide();
-			}
-		});
-
 		//Track title arrived from Simplify
-		Simplify.listenEvent(PMEvents.TrackInformationChange, function(artist, title, album)
+		Simplify.listen(Simplify.events.newTrack, function(artist, title, album)
 		{
 			//Track title variable
 			var track_title = "Music is your best friend. Listen to it.";
@@ -72,7 +50,7 @@
 		});
 
 		//Changing cover image
-		Simplify.listenEvent(PMEvents.CoverChange, function(cover)
+		Simplify.listen(Simplify.events.newCover, function(cover)
 		{
 			//Undefined cover means stopped playback
 			if (cover == undefined)

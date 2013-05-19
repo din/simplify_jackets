@@ -4,24 +4,23 @@
 		<meta name="jacket.title" content="Solar" />
 		<meta name="jacket.author" content="Semibold Mammoth" />
 		<meta name="jacket.url" content="http://mmth.us/simplify/" />
-		<meta name="jacket.version" content="1.0" />
+		<meta name="jacket.version" content="1.1" />
 		<meta name="jacket.bounds" content="500x80" />		
 		<meta name="jacket.variations" content="To The Left, To The Right" />
-		<meta name="jacket.settings" content="!can_handle_track_title_visibility, !can_handle_cover_visibility" />
 		<meta name="jacket.uid" content="com.mmth.solar" />
 
 		<link rel="stylesheet" type="text/css" href="index.css"  />
 		<script type="text/javascript">
 	
 		//When user changes jacket to yours, or Simplify starts with your jacket this event arrives
-		Simplify.listenEvent(PMEvents.Ready, function(initial_state) 
+		Simplify.listen(Simplify.events.ready, function(old_size, initial_state) 
 		{
 			//This template jacket will fade in because of this line
 			$("body").animate({"opacity": "1"});
 
 			var updateCircle = function()
 			{
-				if (Simplify.playerState() == PMPlayerState.Playing)
+				if (Simplify.getPlayerState() == Simplify.playerState.isPlaying)
 				{
 				
 					Simplify.getTrackSeeking(function(value) 
@@ -43,7 +42,7 @@
 		});
 
 		//When variation changes, you can add/remove CSS-classes from body to keep track current variation
-		Simplify.listenEvent(PMEvents.VariationChange, function(variation) 
+		Simplify.listen(Simplify.events.newVariation, function(variation) 
 		{ 
 			
 			if (variation.indexOf("Right") != -1)
@@ -58,13 +57,13 @@
 		});
 
 		//UI modifications on playback changes
-		Simplify.listenEvent(PMEvents.PlaybackStateChange, function(state)
+		Simplify.listen(Simplify.events.newPlaybackState, function(state)
 		{
-			if (state == PMPlayerState.Paused)
+			if (state == Simplify.playerState.isPaused)
 			{
 				/* CHANGE JACKET WHEN PAUSED */
 			}
-			else if (state == PMPlayerState.Playing)
+			else if (state == Simplify.playerState.isPlaying)
 			{
 				/* CHANGE JACKET WHEN PLAYING */
 			}
@@ -75,7 +74,7 @@
 		});
 
 		//Track title arrived from Simplify
-		Simplify.listenEvent(PMEvents.TrackInformationChange, function(artist, title, album)
+		Simplify.listen(Simplify.events.newTrack, function(artist, title, album)
 		{
 			//Undefined attributes means stopped playback.
 			if (artist != undefined && title != undefined)
@@ -91,7 +90,7 @@
 		});
 
 		//Cover image arrives from Simplify!
-		Simplify.listenEvent(PMEvents.CoverChange, function(cover)
+		Simplify.listen(Simplify.events.newCover, function(cover)
 		{
 			if (cover == undefined)
 			{
@@ -100,12 +99,12 @@
 		});
 
 		//You can show controls over here, modify UI and so forth
-		Simplify.listenEvent(PMEvents.InactiveMouseEnter, function()
+		Simplify.listen(Simplify.events.backgroundMouseIn, function()
 		{
 			
 		});
 
-		Simplify.listenEvent(PMEvents.InactiveMouseExit, function()
+		Simplify.listen(Simplify.events.backgroundMouseOut, function()
 		{
 			
 		});

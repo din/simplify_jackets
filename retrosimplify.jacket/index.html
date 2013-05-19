@@ -5,7 +5,7 @@
 		<meta name="jacket.title" content="Retrosimplify" />
 		<meta name="jacket.author" content="Semibold Mammoth" />
 		<meta name="jacket.url" content="http://mmth.us/simplify/" />
-		<meta name="jacket.version" content="1.1" />
+		<meta name="jacket.version" content="1.2" />
 		<meta name="jacket.uid" content="com.mmth.retrosimplify" />
 
 		<!-- Bounds (choose wisely to fit your contents) -->
@@ -13,7 +13,6 @@
 
 		<!-- Variations and boolean settings list -->
 		<meta name="jacket.variations" content="Small Black (153x185), Small White (153x185), Big Black, Big White" />
-		<meta name="jacket.settings" content="can_handle_track_title_visibility, !can_handle_cover_visibility" />
 
 		<!-- Stylesheets appendings (all paths are relative to the root of your jacket, be careful) -->
 		<link rel="stylesheet" type="text/css" href="index.css"  />
@@ -23,20 +22,16 @@
 		<script type="text/javascript">
 	
 		//Setting up on first launch
-		Simplify.listenEvent(PMEvents.Ready, function(initial_state) 
+		Simplify.listen(Simplify.events.ready, function(old_size, initial_state) 
 		{
 			//Fading in on the first launch
-			$("body").animate({"opacity": "1px"});
-			//Activating application on double click
-			$("body, html").dblclick(function()
-			{
-				Simplify.activateCurrentPlayer();
-			});
+			$("body").animate({"opacity": "1"});
+
 		});
 
 		//When variation changes, adding class to body to do our work
 		//See 'variations.css' for definitions of such classes
-		Simplify.listenEvent(PMEvents.VariationChange, function(variation) 
+		Simplify.listen(Simplify.events.newVariation, function(variation) 
 		{ 
 
 			//If variation name contains 'small', changing to the small version
@@ -60,21 +55,8 @@
 			}
 		});
 
-		//When user changes option of track title visibility
-		Simplify.listenEvent(PMEvents.DisplayTrackTitleChange, function(state)
-		{
-			if (state)
-			{
-				$(".track").show();
-			}
-			else
-			{
-				$(".track").hide();
-			}
-		});
-
 		//Changing track title in the box
-		Simplify.listenEvent(PMEvents.TrackInformationChange, function(artist, title, album)
+		Simplify.listen(Simplify.events.newTrack, function(artist, title, album)
 		{
 			//Track title variable
 			var track_title = "Dive into the world of your music.";
@@ -89,7 +71,7 @@
 		});
 
 		//Changing cover image
-		Simplify.listenEvent(PMEvents.CoverChange, function(cover)
+		Simplify.listen(Simplify.events.newCover, function(cover)
 		{
 			//Undefined cover means stopped playback
 			if (cover == undefined)
@@ -103,30 +85,30 @@
 		});
 
 		//When playback state changes
-		Simplify.listenEvent(PMEvents.PlaybackStateChange, function(state)
+		Simplify.listen(Simplify.events.newPlaybackState, function(state)
 		{
-			if (state == PMPlayerState.Paused)
+			if (state == Simplify.playerState.isPaused)
 			{
 				$(".control img[alt=play]").attr("src", "images/play.png");
 			}
-			else if (state == PMPlayerState.Playing)
+			else if (state == Simplify.playerState.isPlaying)
 			{
 				$(".control img[alt=play]").attr("src", "images/pause.png");
 			}
 		});
 
 		//On hover, showing up a little bit of information
-		Simplify.listenEvent(PMEvents.InactiveMouseEnter, function()
+		Simplify.listen(Simplify.events.backgroundMouseIn, function()
 		{
 			//Showing controls only if music is playing aloud
-			if (Simplify.playerState() != PMPlayerState.Stopped)
+			if (Simplify.getPlayerState() != Simplify.playerState.isStopped)
 			{
 				$(".control").fadeIn();
 			}
 		});
 
 		//Hiding controls
-		Simplify.listenEvent(PMEvents.InactiveMouseExit, function()
+		Simplify.listen(Simplify.events.backgroundMouseOut, function()
 		{
 			//Hiding controls
 			$(".control").fadeOut();
@@ -141,9 +123,9 @@
 			Dive into the world of music.
 		</div>
 		<div class="control">
-			<img onclick="Simplify.previousTrack();" src="images/prev.png" alt="prev" />
-			<img onclick="Simplify.togglePlayback();" src="images/play.png" alt="play" />
-			<img onclick="Simplify.nextTrack();" src="images/next.png" alt="next" />	
+			<img onclick="Simplify.playbackPreviousTrack();" src="images/prev.png" alt="prev" />
+			<img onclick="Simplify.playbackToggle();" src="images/play.png" alt="play" />
+			<img onclick="Simplify.playbackNextTrack();" src="images/next.png" alt="next" />	
 		</div>
 	</body>
 </html>
