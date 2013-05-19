@@ -152,7 +152,7 @@ Example:
 
 		<meta name="jacket.bounds" content="300x250" />
 		<meta name="jacket.variations" content="Light Colours, Dark Colours (200x150)" />
-		<meta name="jacket.settings" content="no-dragging" />
+		<meta name="jacket.options" content="no-dragging" />
 
 		<link rel="stylesheet" type="text/css" href="styles/index.css"  />
 		<script type="text/javascript" src="js/script.js"></script>
