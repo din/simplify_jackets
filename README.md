@@ -10,7 +10,7 @@ A jacket is a folder. It may contain any number of files. You can place HTML, CS
 
 Every jacket must have one mandatory file called `index.html` in jacket's root folder. This file contains all information about your jacket: name, author, link to web-site, and some other important properties. Also, this file is used to mark-up your jacket and include cascading style sheets and scripts. 
 
-You do not need to include jQuery into your jacket, because it is already included by Simplify. You may, however, include other frameworks, if you like or forbid Simplify to include jQuery. In this case, your responsibility is to avoid their interference with jQuery. 
+You do not need to include jQuery (currently 1.9.1 is included) into your jacket, because it is already included by Simplify. You may, however, include other frameworks, if you like, or disallow Simplify to include jQuery. 
 
 Note that `index.html` file must be valid HTML (XHTML, HTML4 or HTML5).
 
@@ -80,11 +80,19 @@ Example:
 <meta name="jacket.bounds" content="300x250" />
 ```
 
+You can also specify initial location of your jacket on screen by using the next expression: `WIDTHxHEIGHT at TOPxLEFT`. Note that (0, 0) point of OS X screen is lower-left point of your screen.
+
+Example:
+
+```
+<meta name="jacket.bounds" content="300x250 at 20x20" />
+```
+
 #### jacket.variations
 
 *Required.* Every jacket may have a number of representations or light modifications. For example, it may be 'light' or 'dark', 'big' or 'small'. Do not create multiple versions of your jacket if you just want to switch colours inside it, or make it bigger or smaller. Use CSS styles and variations. 
 
-You can specify any number of variations delimited by comma. You can also specify bounds for some of your variations by using the following string: `My Variation Name (WIDTHxHEIGHT)`. If bounds were not specified, `jacket.bounds` used instead.
+You can specify any number of variations delimited by comma. You can also specify bounds for some of your variations by using the following string: `My Variation Name (WIDTHxHEIGHT)`. If bounds were not specified, `jacket.bounds` is used instead.
 
 Example:
 
@@ -100,12 +108,12 @@ Example:
 
 #### jacket.options
 
-*Optional.* Comma-separated list of options to apply to your jacket. Specify `no-jquery` to avoid including of Simplify's own jQuery script, `bowtie-compatibility` to enable compatibility with Bowtie API (this is useful to port to or develop Bowtie themes for Simplify).
+*Optional.* Comma-separated list of options to apply to your jacket. Use the option from the following list: 1) `no-jquery` disallows Simplify to include bundled jQuery, 2) `bowtie-compatibility` enables compatibility with Bowtie API (this is useful to port to or develop Bowtie themes for Simplify), 3) `no-dragging` locks your jacket on screen and does not allow user to change its screen location.
 
 Example:
 
 ```
-<meta name="jacket.options" content="no-jquery" />
+<meta name="jacket.options" content="no-jquery, no-dragging" />
 ```
 
 #### jacket.author
@@ -144,7 +152,7 @@ Example:
 
 		<meta name="jacket.bounds" content="300x250" />
 		<meta name="jacket.variations" content="Light Colours, Dark Colours (200x150)" />
-		<meta name="jacket.settings" content="can_handle_track_title_visibility" />
+		<meta name="jacket.settings" content="no-dragging" />
 
 		<link rel="stylesheet" type="text/css" href="styles/index.css"  />
 		<script type="text/javascript" src="js/script.js"></script>
@@ -171,39 +179,33 @@ This section describes its methods, events and properties.
 
 Jacket may receive various events from Simplify. Examples are: playback state altered, track position or volume adjusted, current track or artwork changed. Your jacket may react to all of these events and modify its interface to provide user with visual feedback.
 
-You can subscribe to an event by using `Simplify.listenEvent(event_type, callback)` method. The first argument is the name of event to listen to. The second argument is a function that will be called when event occurs.
+You can subscribe to an event by using `Simplify.listen(event_type, callback)` method. The first argument is the name of event to listen to. The second argument is a function that will be called when event occurs.
 
 The following list enumerates all available events:
 
 ```
-PMEvents.Ready
-PMEvents.VariationChange
-PMEvents.PlaybackStateChange
-PMEvents.DisplayCoverChange
-PMEvents.DisplayTrackTitleChange
-PMEvents.InactiveMouseEnter
-PMEvents.InactiveMouseExit
+Simplify.events.ready
+Simplify.events.newVariation
+Simplify.events.newPlaybackState
+Simplify.events.newCover
+Simplify.events.newTrack
+Simplify.events.newScreenResolution
+Simplify.events.backgroundMouseIn
+Simplify.events.backgroundMouseOut
 ```
 
-The following list enumerates deprecated events since Simplify 2.6:
+#### Simplify.events.ready
 
-```
-PMEvents.TrackInformationChange
-PMEvents.CoverChange
-```
+Fired once when jacket is loaded. Use this event instead of `onload` or `documentready` events to initially set-up your jacket. Simplify passes two arguments to your handler of this event. The first argument is jacket size restored from Simplify preferences storage. The second argument is initial playback state.
 
-#### PMEvents.Ready
-
-Fired once when jacket is loaded. Use this event instead of `onload` or `documentready` events to initially set-up your jacket.
-
-#### PMEvents.VariationChange
+#### Simplify.events.newVariation
 
 Fired when user changes variation of jacket from menu or from preferences. Your `callback` method is provided with new variation title. Use it to modify style of jacket to reflect to user change.
 
 For example, you may append CSS class to or remove CSS class from some element when user changes variation.
 
 ```
-Simplify.listenEvent(PMEvents.VariationChange, function(variation) 
+Simplify.listen(Simplify.events.newVariation, function(variation) 
 { 
 	if (variation == "Light Color")
 	{
@@ -219,26 +221,26 @@ Simplify.listenEvent(PMEvents.VariationChange, function(variation)
 
 Then you may style your elements appropriately using `.light` class on `body` element. 
 
-#### PMEvents.PlaybackStateChange
+#### Simplify.events.newPlaybackState
 
 Fired when user pauses, resumes playback or stops player. New playback state is passed as an argument to `callback`. API defines useful constants that you can use to compare against:
 
 ```
-PMPlayerState.Playing
-PMPlayerState.Paused 
-PMPlyaerState.Stopped
+Simplify.playerState.isPlaying
+Simplify.playerState.isPaused 
+Simplify.playerState.isStopped
 ```
 
 You can handle this event like so:
 
 ```
-Simplify.listenEvent(PMEvents.PlaybackStateChange, function(state)
+Simplify.listen(Simplify.events.newPlaybackState, function(state)
 {
-	if (state == PMPlayerState.Paused)
+	if (state == Simplify.playerState.isPaused)
 	{
 		//Do something on pause
 	}
-	else if (state == PMPlayerState.Playing)
+	else if (state == Simplify.playerState.isPlaying)
 	{
 		//Do something on resume
 	}
@@ -249,14 +251,14 @@ Simplify.listenEvent(PMEvents.PlaybackStateChange, function(state)
 });
 ```
 
-#### PMEvents.TrackInformationChange
+#### Simplify.events.newTrack
 
-Fires on track switch (i.e. user selects new track in player, or the next track in playlist plays automatically). Your callback receives `artist`, `cover` and `album` values as arguments. 
+Fires on track switch (i.e. user selects new track in player). Your callback receives `artist`, `cover` and `album` values as arguments. 
 
 Example:
 
 ```
-Simplify.listenEvent(PMEvents.TrackInformationChange, function(artist, title, album)
+Simplify.listen(Simplify.events.newTrack, function(artist, title, album)
 {
 	//Undefined attributes means stopped playback.
 	//First two properties always exist
@@ -272,23 +274,29 @@ Simplify.listenEvent(PMEvents.TrackInformationChange, function(artist, title, al
 });
 ```
 
-#### PMEvents.CoverChange
+#### Simplify.events.newCover
 
 Fires when album artwork is delivered for current track. Simplify pushes either path to file with artwork on disk or data-uri encoded image to your callback.
 
-#### PMEvents.DisplayCoverChange
+#### Simplify.events.newScreenResolution
 
-*Deprecated in Simplify 2.6.* Fires when user changed cover visibility for your jacket. This event fires only if you set `can_handle_cover_visibility` in `jacket.settings` property. Callback is called with boolean value that reflects user's choice.
+Fires when screen resolution was changed. Two arguments are passed into your callback. The first one is the new screen resolution, the second one is previous screen resolution.
 
-#### PMEvents.DisplayTrackTitleChange
+Example:
 
-*Deprecated in Simplify 2.6.* Fires when user changed track title visibility for your jacket. This event fires only if you set `can_handle_track_title_visibility` in `jacket.settings` property. Callback is called with boolean value that reflects user's choice.
+```
+Simplify.listen(Simplify.events.newScreenResolution, function(new_resolution, old_resolution)
+{
+	//new_resolution contains something like {"width" : 2560, "height" : 1440}
+	//old_resolution contains something like {"width" : 1920, "height" : 1200}
+})
+``` 
 
-#### PMEvents.InactiveMouseEnter
+#### Simplify.events.backgroundMouseIn
 
 Fires if user moves mouse cursor into bounds of jacket.
 
-#### PMEvents.InactiveMouseExit
+#### Simplify.events.backgroundMouseOut
 
 Fires if user moves mouse cursor out of bounds of jacket.
 
@@ -296,37 +304,67 @@ Fires if user moves mouse cursor out of bounds of jacket.
 
 Your jacket can also affect behaviour of Simplify by using methods of `Simplify` object. All these methods are described in this section.
 
-#### Simplify.currentVariation()
+#### Simplify.getJacketVariation()
 
 Returns name of current variation as a string.
 
-#### Simplify.playerState()
+#### Simplify.getJacketShouldBeFixed()
+
+Returns boolean value indicating whether jacket is fixed on screen (`true`) or not (`false`). 
+
+#### Simplify.setJacketShouldBeFixed(fixed)
+
+You can lock your jacket position of screen, so user won't be able to move it around. Pass `true` to fix jacket position on screen, `false` to allow user to change jacket position.
+
+#### Simplify.getJacketFrame()
+
+Returns a hash with jacket dimensions and its current location. 
+
+Example return value:
+
+```
+{ "width" : 500, "height" : 350, "top" : 40, "left" : 80 }
+```
+
+#### Simplify.setJacketFrame(dimensions)
+
+Updates current dimensions of jacket or its location on screen. You can alter jacket's size: `width` and `height`, jacket's position: `top` and `left`. You don't need to specify all properties at the same time. 
+
+Example:
+
+```
+Simplify.setJacketFrame({"width" : 600}); //Updates jacket width to 600px, but do not modifies its height and position
+Simplify.setJacketFrame({"top" : 100, "left" : 100}); //Updates jacket position while preserving its dimensions
+Simplify.setJacketFrame({"left" : 200, "height" : 400}); 
+```
+
+#### Simplify.getPlayerState()
 
 Returns current playback state of player as one of predefined constant:
 
 ```
-PMPlayerState.Playing
-PMPlayerState.Paused 
-PMPlyaerState.Stopped
+Simplify.playerState.isPlaying
+Simplify.playerState.isPaused 
+Simplify.playerState.isStopped
 ```
 
-#### Simplify.togglePlayback()
+#### Simplify.playbackToggle()
 
 Resumes playback if player is paused and pauses playback if player is playing something.
 
-#### Simplify.pausePlayback()
+#### Simplify.playbackPause()
 
 Pauses playback.
 
-#### Simplify.resumePlayback()
+#### Simplify.playbackResume()
 
 Resumes playback.
 
-#### Simplify.previousTrack()
+#### Simplify.playbackPreviousTrack()
 
 Switches to previous track in current playlist.
 
-#### Simplify.nextTrack()
+#### Simplify.playbackNextTrack()
 
 Switches to next track in current playlist.
 
@@ -347,6 +385,10 @@ Simplify.getPlayerVolume(function(volume)
 });
 ```
 
+#### Simplify.getTrackLength()
+
+Returns current track length in seconds.
+
 #### Simplify.setTrackSeeking(position)
 
 Adjusts current track position. `position` must be an integer representing new position in seconds.
@@ -362,6 +404,62 @@ Simplify.getTrackSeeking(function(position)
 {
 	//Do something with 'position'
 });
+```
+
+#### Simplify.getTrackPlayedAmount(callback)
+
+Calls you callback with double value between `0` and `1` indicating amount of track played.
+
+Example:
+
+Simplify.getTrackPlayedAmount(function(amount)
+{
+	//Do something with 'amount'
+});
+
+#### Simplify.getSystemScreenSize
+
+Returns a hash with dimensions of current system screen.
+
+Example returning value:
+
+```
+{ "width" : 1920, "height" : 1080 }
+```
+
+## Migrating to Simplify 3.0 API from previous versions of API
+
+You need to update event names:
+
+```
+PMEvents.Ready -> Simplify.events.ready 
+PMEvents.VariationChange 			-> Simplify.events.newVariation
+PMEvents.PlaybackStateChange 		-> Simplify.events.newPlaybackState
+PMEvents.DisplayCoverChange 		-> Simplify.events.newCover
+PMEvents.DisplayTrackTitleChange -> Simplify.events.newTrack
+PMEvents.InactiveMouseEnter 		-> Simplify.events.backgroundMouseIn
+PMEvents.InactiveMouseExit 		-> Simplify.events.backgroundMouseOut
+```
+
+Playback states have new name aliases:
+
+```
+PMPlayerState.Playing -> Simplify.playerState.isPlaying
+PMPlayerState.Paused  -> Simplify.playerState.isPaused
+PMPlyaerState.Stopped -> Simplify.playerState.isStopped
+```
+
+Some function has changed their names, too:
+
+```
+Simplify.listenEvent 		-> Simplify.listen
+Simplify.currentVariation 	-> Simplify.getJacketVariation
+Simplify.playerState 		-> Simplify.getPlayerState
+Simplify.togglePlayback 	-> Simplify.playbackToggle
+Simplify.pausePlayback 		-> Simplify.playbackPause
+Simplify.resumePlayback 	-> Simplify.playbackResume
+Simplify.previousTrack 		-> Simplify.playbackPreviousTrack
+Simplify.nextTrack 			-> Simplify.playbackNextTrack
 ```
 
 ## Debugging jacket
