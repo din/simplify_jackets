@@ -234,7 +234,14 @@
 
 			Simplify.listen(Simplify.events.newTrack, function(author, title, album)
 			{
-				$("#jacket strong").text(author + " - " + title);
+				if (typeof author != "undefined" && typeof title != "undefined")
+				{
+					$("#jacket strong").text(author + " - " + title);
+				}
+				else
+				{
+					$("#jacket strong").text("Simplify is waiting for your music.");
+				}
 			});
 
 			Simplify.listen(Simplify.events.backgroundMouseIn, function()
