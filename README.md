@@ -4,6 +4,8 @@ Jacket for [Simplify](http://mmth.us/simplify/) is a simple bundle with HTML, CS
 
 A jacket is similar to any HTML web-page with CSS styles and JS scripts. If you can mark-up and style web-pages, you can also 'knit' your own jacket for Simplify. 
 
+You can find better version of documentation [on this web-site](http://documentup.com/mmth/simplify_jackets/).
+
 # Jacket folder structure and `index.html`
 
 A jacket is a folder. It may contain any number of files. You can place HTML, CSS, JS, or even images inside the folder. 
@@ -14,7 +16,7 @@ You do not need to include jQuery (currently 1.9.1 is included) into your jacket
 
 Note that `index.html` file must be valid HTML (XHTML, HTML4 or HTML5).
 
-## Overall structure of `index.html`
+## Structure of `index.html` and attributes
 
 Every `index.html` must contain a set of predefined meta-attributes. They are used to store meta-information about your jacket. Think of this as of some kind of protocol on top of HTML. 
 
