@@ -1,4 +1,4 @@
-# What are jackets?
+# Simplify Jackets
 
 Jacket for [Simplify](http://mmth.us/simplify/) is a simple bundle with HTML, CSS and JS files inside. Jackets are skins for Simplify's desktop widgets. 
 
@@ -6,7 +6,7 @@ A jacket is similar to any HTML web-page with CSS styles and JS scripts. If you 
 
 You can find better version of documentation [on this web-site](http://documentup.com/mmth/simplify_jackets/).
 
-# Jacket folder structure and `index.html`
+## Jacket folder structure
 
 A jacket is a folder. It may contain any number of files. You can place HTML, CSS, JS, or even images inside the folder. 
 
@@ -16,7 +16,7 @@ You do not need to include jQuery (currently 1.9.1 is included) into your jacket
 
 Note that `index.html` file must be valid HTML (XHTML, HTML4 or HTML5).
 
-## Structure of `index.html` and attributes
+## Layout of `index.html` and attributes
 
 Every `index.html` must contain a set of predefined meta-attributes. They are used to store meta-information about your jacket. Think of this as of some kind of protocol on top of HTML. 
 
@@ -169,15 +169,13 @@ Note that you are able to create a jacket with a single `index.html` file by inc
 
 When you include external files, all paths must be *relative* to the root of your jacket folder (in fact, *relative* to your `index.html` file).
 
-# Jackets JavaScript API 
+## Jackets JavaScript API and incoming events
 
 When you created HTML-document for your jacket, it's time to write some JavaScript. You will be using Jackets API in order to communicate with Simplify. This API is pretty straightforward. 
 
 Each jacket has its own JavaScript-environment. This environment contains `Simplify` object to interact with Simplify itself. `Simplify` object is ready to use, you don't need to instantiate it or initialize somehow. 
 
 This section describes its methods, events and properties.
-
-## Incoming events
 
 Jacket may receive various events from Simplify. Examples are: playback state altered, track position or volume adjusted, current track or artwork changed. Your jacket may react to all of these events and modify its interface to provide user with visual feedback.
 
@@ -431,7 +429,7 @@ Example returning value:
 { "width" : 1920, "height" : 1080 }
 ```
 
-# Migrating to Simplify 3.0 API
+## Migrating to Simplify 3.0 API
 
 You need to update event names:
 
@@ -466,7 +464,7 @@ Simplify.previousTrack 		-> Simplify.playbackPreviousTrack
 Simplify.nextTrack 			-> Simplify.playbackNextTrack
 ```
 
-# Debugging jacket
+## Debugging jacket
 
 To debug your jacket using Simplify, you need to create it right inside special directory. 
 
@@ -478,7 +476,7 @@ To debug your jacket using Simplify, you need to create it right inside special 
 
 Now you can edit any files in jacket's directory and Simplify will automatically reload your jacket every time you save your files.
 
-# Distributing jacket
+## Distributing jacket
 
 To distribute and share your jacket, simply add to the folder with your jacket contents a `.jacket` extension. If you've got a folder `my_jacket`, just rename it to `my_jacket.jacket`. Note that you **don't need to compress your folder before renaming it since Simplify 2.6**. 
 
