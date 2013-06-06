@@ -429,6 +429,11 @@ Example returning value:
 { "width" : 1920, "height" : 1080 }
 ```
 
+## Requesting API additions
+
+You can [create a discussion](https://github.com/mmth/simplify_jackets/issues/new) to request new API method or property that you wish Simplify to provide. We will consider adding it to our API. 
+
+
 ## Migrating to Simplify 3.0 API
 
 You need to update event names:
