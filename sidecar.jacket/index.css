@@ -1,0 +1,242 @@
+
+/* Overall properties of jacket */
+
+html, body
+{
+	margin: 0;
+	padding: 0;
+	color: #fff;
+	opacity: 1;
+	cursor: default;
+}
+
+body {
+	background: rgba(14, 13, 16, .15);
+}
+
+/* Delete the declaration below if you don't want to fade in jacket */
+
+body
+{
+	opacity: 0;
+	color: #fff;
+}
+
+/* Your properties below */
+
+.progress
+{
+	margin:0;
+	padding:0;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	top: 0;
+	z-index:0;
+}
+
+.progress span
+{
+	background: rgba(255,255,255, .6);
+	font-family: "Helvetica Neue";
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	line-height: 60px;
+	text-align: center;
+	color: white;
+	-webkit-transform: translate3d(0, 0, 0);
+	-webkit-transition:all 1.1s linear;
+	transition:all 1.1s linear;
+}
+
+.paused .progress span {
+	-webkit-transition:all .2s linear;
+	transition:all .2s linear;
+	/*top:45%!important;
+	bottom: 45%;*/
+	opacity: .75;
+}
+.paused .progress span:before {
+	display: block;
+	content:"||";
+	font-family: "Helvetica Neue";
+	font-weight: 700;
+	font-size: 80px;
+	padding-top: 30px;
+	color: rgba(255,255,255,.3);
+}
+
+.jacket
+{
+	position:absolute;
+	z-index: 10;
+	width: 298px;
+	height: 1416px;
+	background: transparent;
+	overflow: visible;
+}
+
+.jacket > p
+{
+	font-family: "Helvetica Neue";
+	font-weight: 600;
+	font-size: 40px;
+	text-align: left;
+	display:block;
+	width: 1418px;
+	color: rgba(255,255,255,.5);
+	white-space: pre;
+	overflow: visible;
+	text-overflow: ellipsis;
+	position: absolute;
+	bottom:490px;
+	left:-315px;
+	-webkit-transform: rotate(-90deg);
+	-webkit-transition: all .5s linear;
+}
+
+.jacket p > strong, .jacket p > span {
+	max-width: 50%;
+	white-space: pre;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.jacket .artist
+{
+	background: rgba(53, 51, 47, .35);
+	display: block;
+	float: left;
+	padding: 250px 5px 10px 30px;
+	position:relative;
+	top: -250px;
+}
+
+.jacket .title
+{
+	font-weight: 100;
+}
+
+#message {
+	text-transform: lowercase;
+	display: block;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	color: white;
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 45px;
+	font-weight: bold;
+	text-align: center;
+	opacity: .3;
+	/*-webkit-transform: scale(1);*/
+	-webkit-filter: blur(0);
+	-webkit-transition: 0;
+	text-shadow: 0 0 8px #fff;
+}
+
+#message.show {
+	top: 20%;
+	opacity: 0;
+	/*-webkit-transform: scale(1.4);*/
+	-webkit-filter: blur(10px);
+	-webkit-transition: all 1s ease-in;
+	text-shadow: 0 -28px 12px #fff, 0 -48px 12px #fff, 0 -68px 12px #fff;
+}
+
+/* Variations */
+
+.blue .progress span  { background: rgba(63, 185, 255, .6);  }
+
+.green .progress span { background: rgba(114, 190, 119, .6); }
+
+.black .progress span { background: rgba(0, 0, 0, 1);    }
+.black .jacket .artist { background: rgba(255, 255, 255, .09); }
+.black { background: rgba(0, 0, 0, .8);  }
+
+.white .progress span { background: rgba(255, 255, 255, .6); }
+.white { background: rgba(255,255,255,.15); color: black; }
+.white .jacket .artist { background: rgba(0,0,0,.1); }
+.white .jacket > p { color: rgba(0,0,0,.5); }
+
+.invisible { background: rgba(0,0,0,.1); }
+.invisible .progress span { background: rgba(0,0,0,.1);}
+.invisible .jacket .artist { background: rgba(0,0,0,.1); }
+.invisible .jacket > p { color: rgba(255,255,255,.3); }
+
+.blowout {
+	background-color: #000000;
+	background: -webkit-linear-gradient(top, rgb(0, 0, 0), rgb(65, 8, 76));
+	/*background-image: -webkit-gradient(linear, left top, left bottom, from(rgb(197, 13, 124)), to(rgb(23, 0, 14)));*/
+}
+.blowout .progress span {
+	background: -webkit-linear-gradient(top, rgb(0, 0, 0) 0%, rgb(255, 222, 41) 34%, rgb(255, 222, 41) 100%);
+	-webkit-filter: blur(40px);
+	-webkit-transition: all .2s ease-in-out;
+	bottom: -40px;
+
+}
+.paused.blowout .progress span {
+	opacity: 1;
+	-webkit-filter: blur(19px) opacity(95%);
+}
+.blowout .jacket {  }
+.blowout .jacket .artist {
+	background: rgba(0,0,0, .4);
+	-webkit-filter: drop-shadow(1px 6px 6px rgba(0,0,0,.5));
+}
+.blowout .jacket .title { font-weight: 300; -webkit-filter: drop-shadow(1px 2px 2px rgba(0,0,0,.5));}
+.blowout .jacket > p { color: #fff; opacity: .5;  }
+
+.fadeaway {
+	background-color: #000000;
+	background: -webkit-linear-gradient(top, #000 0%, #000 64%, #21376f);
+	/*background-image: -webkit-gradient(linear, left top, left bottom, from(rgb(197, 13, 124)), to(rgb(23, 0, 14)));*/
+}
+.fadeaway .progress span {
+	background: -webkit-linear-gradient(top, #000 0%, #009ae4 34%, #009ae4 100%);
+	-webkit-filter: blur(40px);
+	-webkit-transition: all .2s ease-in-out;
+	bottom: -40px;
+}
+.paused.fadeaway .progress span {
+	opacity: 1;
+	-webkit-filter: blur(19px) opacity(95%);
+}
+.fadeaway .jacket {  }
+.fadeaway .jacket .artist {
+	background: rgba(0,0,0, .4);
+	-webkit-filter: drop-shadow(1px 6px 6px rgba(0,0,0,.5));
+}
+.fadeaway .jacket .title { font-weight: 300; -webkit-filter: drop-shadow(1px 2px 2px rgba(0,0,0,.5));}
+.fadeaway .jacket > p { color: #fff; opacity: .5;  }
+
+.fuzz {
+	background-color: rgba(0,0,0,.1);
+	/*background-image: -webkit-gradient(linear, left top, left bottom, from(rgb(197, 13, 124)), to(rgb(23, 0, 14)));*/
+}
+.fuzz .progress span {
+	background: rgba(255,255,255,.6);
+	-webkit-filter: blur(20px);
+	-webkit-transition: all .2s ease-in-out;
+	bottom: -20px;
+}
+.paused.fuzz .progress span {
+	opacity: .85;
+	-webkit-filter: blur(19px) opacity(95%);
+}
+
+.fuzz .jacket .artist {
+	background: rgba(0,0,0, .1);
+	-webkit-filter: drop-shadow(1px 4px 2px rgba(0,0,0,.2));
+	color: rgba(255,255,255,0);
+	text-shadow: 1px 1px 2px #fff, -1px 1px 40px #000;
+}
+.fuzz .jacket .title { font-weight: 300; -webkit-filter: drop-shadow(1px 2px 1px rgba(0,0,0,.2));}
+.fuzz .jacket > p { color: #fff; opacity: .5;  }

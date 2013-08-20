@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en">
+	<head>
+		<meta name="jacket.title" content="Sidecar" />
+		<meta name="jacket.author" content="Brett Terpstra" />
+		<meta name="jacket.url" content="http://brettterpstra.com" />
+		<meta name="jacket.uid" content="com.brettterpstra.sidecar" />
+		<meta name="jacket.version" content="2.0" />
+		<meta name="jacket.bounds" content="298x1418 at 0x0" />
+		<meta name="jacket.variations" content="Snozzberry, Easy being green, Absence of dark, Obsidious, Wallflower, Nightfall, Oddity, Superfuzz Bigmuff" />
+		<meta name="jacket.options" content="no-dragging" />
+
+		<link rel="stylesheet" type="text/css" href="index.css"  />
+		<script type="text/javascript">
+
+		var timer;
+
+		// test if current theme is blurred
+		// add new blurred themes to blurredThemes array as an array of class and foreground color
+		function isBlurred() {
+			var blurredThemes = [
+				["blowout", "rgba(255, 222, 41, .2)"],
+				["fadeaway", "rgba(0, 154, 228, .2)"],
+				["fuzz", "rgba(255, 255, 255, .2)"]
+			], i = 0;
+
+			for (i;i<blurredThemes.length;i++) {
+				if ($("body").hasClass(blurredThemes[i][0])) {
+					return blurredThemes[i][1];
+				}
+			}
+			return false;
+		}
+
+		//When user changes jacket to yours, or Simplify starts with your jacket this event arrives
+		Simplify.listen(Simplify.events.ready, function(initial_state)
+		{
+			var screensize = Simplify.getSystemScreenSize();
+			Simplify.setJacketFrame({"height" : screensize.height, "bottom" : 0, "left" : 0 });
+			//This template jacket will fade in because of this line
+			$('#message').text("").removeClass("show");
+			$("body").animate({"opacity": ".85"},2000);
+
+			// if (Simplify.playerState() == PMPlayerState.Stopped)
+			// {
+			// 	$('.progress span').css({top:"100%"});
+			// }
+			// else
+			// {
+			// 	$('.progress span').css({top:0});
+			// }
+			$('.progress span').css({top:"100%"});
+			var updateProgress = function()
+			{
+				if (Simplify.getPlayerState() == Simplify.playerState.isPlaying || Simplify.getPlayerState() == Simplify.playerState.isPaused)
+				{
+					Simplify.getTrackPlayedAmount(function(value)
+					{
+						// Progress bar height
+						$('.progress span').css({top:(Math.round(value*100/0.01)*0.01).toString() + "%"});
+
+						// For blurred themes
+						var fgColor = isBlurred();
+						if (!fgColor === false) {
+							// blur amount
+							blurValue = ((value*105)+30);
+							// shadow length/blur
+							shadowValue = (((Math.round((value*100)*10)/10)*3)-20);
+							shadowValue2 = ((Math.round(shadowValue)/1.5)-15);
+							shadowValue3 = ((Math.round(shadowValue2)/2)+15);
+							shadowValue = shadowValue < 0 ? 0 : shadowValue;
+							shadowValue2 = shadowValue2 < 0 ? 0 : shadowValue2;
+							shadowValue3 = shadowValue3 < 0 ? 0 : shadowValue3;
+							$('.progress span').css({
+								'-webkit-filter': 'blur('+blurValue+'px)',
+								'box-shadow': "0 -"+shadowValue2.toString()+"px "+shadowValue2.toString()+"px "+fgColor+", 0 -"+shadowValue3.toString()+"px 20px "+fgColor
+							});
+						} else {
+							$('.progress span').css({
+								'-webkit-filter': 'blur(0)',
+								'box-shadow': "none"
+							});
+						}
+					});
+				}
+			}
+
+			updateProgress();
+			setInterval(updateProgress, 1000);
+
+			$(".jacket").click(function(ev){
+				ev.preventDefault();
+				if (ev.metaKey) {
+					var percentage = (ev.pageY - $(this).offset().top)/$(this).height();
+					Simplify.setTrackSeeking(Simplify.getTrackLength() * percentage);
+				} else {
+					Simplify.playbackToggle();
+				}
+			});
+
+			//Activating application on double click
+			$("body, html").dblclick(function()
+			{
+				$('#message').text("").removeClass("show");
+				Simplify.playbackNextTrack();
+			});
+
+		});
+
+		Simplify.listen(Simplify.events.newScreenResolution, function(new_res, old_res) {
+			Simplify.setJacketFrame({"height" : new_res.height, "bottom" : 0, "left" : 0 });s
+		});
+
+		//When variation changes, you can add/remove CSS-classes from body to keep track current variation
+		Simplify.listen(Simplify.events.newVariation, function(variation)
+		{
+			/* EXAMPLE CODE. IT WORKS! */
+
+			if (variation.indexOf("Snozzberry") != -1)
+			{
+				$("body").addClass("blue");
+			}
+			else
+			{
+				$("body").removeClass("blue");
+			}
+
+			if (variation.indexOf("Easy being green") != -1)
+			{
+				$("body").addClass("green");
+			}
+			else
+			{
+				$("body").removeClass("green");
+			}
+
+			if (variation.indexOf("Absence of dark") != -1)
+			{
+				$("body").addClass("white");
+			}
+			else
+			{
+				$("body").removeClass("white");
+			}
+
+			if (variation.indexOf("Obsidious") != -1)
+			{
+				$("body").addClass("black");
+			}
+			else
+			{
+				$("body").removeClass("black");
+			}
+
+			if (variation.indexOf("Wallflower") != -1)
+			{
+				$("body").addClass("invisible");
+			}
+			else
+			{
+				$("body").removeClass("invisible");
+			}
+
+			if (variation.indexOf("Nightfall") != -1)
+			{
+				$("body").addClass("blowout");
+			}
+			else
+			{
+				$("body").removeClass("blowout");
+			}
+
+			if (variation.indexOf("Oddity") != -1)
+			{
+				$("body").addClass("fadeaway");
+			}
+			else
+			{
+				$("body").removeClass("fadeaway");
+			}
+
+			if (variation.indexOf("Superfuzz Bigmuff") != -1)
+			{
+				$("body").addClass("fuzz");
+			}
+			else
+			{
+				$("body").removeClass("fuzz");
+			}
+
+		});
+
+		//UI modifications on playback changes
+		Simplify.listen(Simplify.events.newPlaybackState, function(state)
+		{
+			if (state == Simplify.playerState.isPaused)
+			{
+				$('body').addClass('paused');
+				showMessage('paused');
+			}
+			else if (state == Simplify.playerState.isPlaying)
+			{
+				$('body').removeClass('paused');
+				showMessage('playing');
+			}
+			else
+			{
+				$('.progress').removeClass('paused');
+				$('#message').fadeOut();
+			}
+		});
+
+		//Track title arrived from Simplify
+		Simplify.listen(Simplify.events.newTrack, function(artist, title, album)
+		{
+			//Undefined attributes means stopped playback.
+			if (artist != undefined && title != undefined)
+			{
+				$(".title,.artist").fadeOut('fast',function() {
+					$(".title").text(title);
+					$(".artist").text(artist+" ");
+					$(this).fadeIn('fast');
+				})
+
+				$('.progress span').css({top:0});
+			}
+			else
+			{
+				$(".title").text("I can haz beats?");
+				$(".artist").html("&nbsp;");
+			}
+		});
+
+		//Cover image arrives from Simplify!
+		Simplify.listen(Simplify.events.newCover, function(cover)
+		{
+			if (cover == undefined)
+			{
+				return;
+			}
+		});
+
+		//You can show controls over here, modify UI and so forth
+		Simplify.listen(Simplify.events.backgroundMouseIn, function()
+		{
+			$("body").stop().animate({"opacity": ".95"},500);
+		});
+
+		Simplify.listen(Simplify.events.backgroundMouseOut, function()
+		{
+			$("body").stop().animate({"opacity": ".85"},500);
+		});
+
+		function showMessage(msg) {
+			Simplify.getTrackPlayedAmount(function(value)
+			{
+				if (value > .001) {
+					$('#message').text('').removeClass('show');
+					clearTimeout(timer);
+					timer = null;
+					$('#message').text(msg).addClass('show');
+					timer = setTimeout(function(){
+						$('#message').text('').removeClass('show');
+					}, 1100);
+				}
+			});
+		}
+		</script>
+	</head>
+	<body>
+		<div class="progress">
+			<span></span>
+		</div>
+		<div class="jacket">
+			<p><strong class="artist"> </strong> <span class="title">I can haz beats?</span></p>
+		</div>
+		<span id="message">paused</span>
+	</body>
+</html>
