@@ -23,10 +23,11 @@ body
 
 .cover
 {
-	left: 40px;
+	display: block;
+	left: 42px;
 	top: 10px;
 	position: relative;
-	-webkit-background-size: cover;
+	-webkit-background-size: cover !important;
 	width: 258px;
 	height: 254px;
 	background: url(images/default.png) no-repeat;

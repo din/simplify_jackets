@@ -3,14 +3,14 @@
 
 .small-size .cover
 {
-	-webkit-background-size: 128px 128px;
+	-webkit-background-size: 128px 128px !important;
 	width: 128px;
 	height: 128px;
 }
 
 .small-size .overlay
 {
-	-webkit-background-size: 153px 128px;
+	-webkit-background-size: 153px 128px !important;
 }
 
 .small-size .track

@@ -115,7 +115,7 @@
 		});
 
 		//Changing track title in the box
-		Simplify.listen(Simplify.events.newTrackInformation, function(artist, title, album)
+		Simplify.listen(Simplify.events.newTrack, function(artist, title, album)
 		{
 			//Undefined attributes means stopped playback.
 			if (artist != undefined && title != undefined)
