@@ -294,11 +294,29 @@ Simplify.listen(Simplify.events.newScreenResolution, function(new_resolution, ol
 
 ### Simplify.events.backgroundMouseIn
 
-Fires if user moves mouse cursor into bounds of jacket.
+Fires if user moves mouse cursor into bounds of jacket. The first argument is the location where mouse entered bounds of jacket.
+
+Example:
+
+```
+Simplify.listen(Simplify.events.backgroundMouseIn, function(location)
+{
+	//location contains something like {"left" : 300, "top" : 0}
+})
+``` 
 
 ### Simplify.events.backgroundMouseOut
 
-Fires if user moves mouse cursor out of bounds of jacket.
+Fires if user moves mouse cursor out of bounds of jacket. Similar to the previous event, the first argument is the location where mouse exited bounds of jacket.
+
+
+```
+Simplify.listen(Simplify.events.newScreenResolution, function(new_resolution, old_resolution)
+{
+	//new_resolution contains something like {"width" : 2560, "height" : 1440}
+	//old_resolution contains something like {"width" : 1920, "height" : 1200}
+})
+``` 
 
 ## Available actions 
 
@@ -439,12 +457,12 @@ You can [create a discussion](https://github.com/mmth/simplify_jackets/issues/ne
 You need to update event names:
 
 ```
-PMEvents.Ready							-> Simplify.events.ready 
+PMEvents.Ready						-> Simplify.events.ready 
 PMEvents.VariationChange			-> Simplify.events.newVariation
 PMEvents.PlaybackStateChange		-> Simplify.events.newPlaybackState
-PMEvents.DisplayCoverChange		-> Simplify.events.newCover
+PMEvents.DisplayCoverChange			-> Simplify.events.newCover
 PMEvents.DisplayTrackTitleChange	-> Simplify.events.newTrack
-PMEvents.InactiveMouseEnter		-> Simplify.events.backgroundMouseIn
+PMEvents.InactiveMouseEnter			-> Simplify.events.backgroundMouseIn
 PMEvents.InactiveMouseExit			-> Simplify.events.backgroundMouseOut
 ```
 
